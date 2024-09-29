@@ -1,0 +1,28 @@
+html, body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body{
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+}
+
+nav {
+    width: 300px;
+    background-color: blue;
+}
+
+#pokemon_display {
+    background-color: blueviolet;
+    width: 100%;
+}
+
+#pokemon_list {
+    display: flex;
+    flex-direction: column;
+}
