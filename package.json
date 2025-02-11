@@ -1,12 +1,13 @@
 {
-  "name": "pokedex",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+	"name": "pokedex",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "concurrently \"npm --prefix poke-backend run dev\" \"npm --prefix poke-frontend run dev\" "
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
 }
