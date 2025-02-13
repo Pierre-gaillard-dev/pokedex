@@ -27,7 +27,6 @@ const pokemonController = {
 		const pokemon = new Pokemon(req.body)
 		try {
 			const newPokemon = await pokemon.save()
-			console.log(newPokemon)
 			res.status(201).json(newPokemon)
 		} catch (error: any) {
 			console.log(error.message)
