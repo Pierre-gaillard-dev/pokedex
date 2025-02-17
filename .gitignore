@@ -1,3 +1,6 @@
 node_modiules
 */node_modules
 .timetracker
+
+.env
+*/.env

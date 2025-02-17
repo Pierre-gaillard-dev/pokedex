@@ -13,7 +13,7 @@ const sequelize = new Sequelize(
 	process.env.DB_PASSWORD,
 	{
 		host: "localhost",
-		dialect: "mariadb",
+		dialect: "postgres",
 		dialectOptions: {
 			timezone: "Etc/GMT-2",
 		},
