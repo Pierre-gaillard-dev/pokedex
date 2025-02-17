@@ -1,21 +1,30 @@
-import fs from "fs"
-import path from "path"
+import Pokemon from "./pokemon"
+import Type from "./type"
+import Rel_pokemonType from "./rel_pokemonType"
 
-const basename = path.basename(__filename)
+// définition des relations entre les tables
+Pokemon.belongsToMany(Type, {
+	through: Rel_pokemonType,
+	foreignKey: "pokemon_id",
+	otherKey: "type_id",
+	as: "types",
+})
 
-console.log("Initializing models")
+Type.belongsToMany(Pokemon, {
+	through: Rel_pokemonType,
+	foreignKey: "type_id",
+	otherKey: "pokemon_id",
+	as: "pokemons",
+})
 
-const models: { [key: string]: any } = {}
+Rel_pokemonType.belongsTo(Pokemon, {
+	foreignKey: "pokemon_id",
+	as: "pokemon",
+})
 
-fs.readdirSync(__dirname)
-	.filter((file) => {
-		return file !== basename && file.endsWith(".ts")
-	})
-	.forEach((file) => {
-		const model = require(path.join(__dirname, file))
-		if (model.default) {
-			const new_model = model.default
-			models[model.default.name] = new_model
-			console.log(`Model ${model.default.name} initialized`)
-		}
-	})
+Rel_pokemonType.belongsTo(Type, {
+	foreignKey: "type_id",
+	as: "type",
+})
+
+export { Pokemon, Type, Rel_pokemonType }

@@ -13,7 +13,9 @@ const TypeController = {
 
 	getTypeById: async (req: Request, res: Response) => {
 		try {
-			const type = await Type.findByPk(req.params.id)
+			const type = await Type.findByPk(req.params.id, {
+				include: "pokemons",
+			})
 			if (!type) {
 				res.status(404).json({ message: "Type not found" })
 				return
@@ -28,6 +30,7 @@ const TypeController = {
 		try {
 			const type = await Type.findOne({
 				where: { name: req.params.name },
+				include: "pokemons",
 			})
 			if (!type) {
 				res.status(404).json({ message: "Type not found" })
@@ -60,7 +63,9 @@ const TypeController = {
 			return
 		}
 		try {
-			const type = await Type.findByPk(req.params.id)
+			const type = await Type.findByPk(req.params.id, {
+				include: "pokemons",
+			})
 			if (!type) {
 				res.status(404).json({ message: "Type not found" })
 				return

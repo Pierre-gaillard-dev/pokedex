@@ -4,14 +4,18 @@ import pokemons from "./mock-pokemons"
 const types: string[] = []
 
 export const fillDB = async () => {
-	console.log("Filling the database with pokemons and types")
+	console.log("Filling database")
+	await addAllPokemons()
+	await addAllTypes()
+	console.log("Databse filled")
+}
 
-	pokemons.forEach((pokemon) => {
-		addPokemon(pokemon)
-		pokemon.types.forEach((type) => {
+const addAllPokemons = async () => {
+	pokemons.forEach(async (pokemon) => {
+		await addPokemon(pokemon)
+		pokemon.types.forEach(async (type) => {
 			if (!types.includes(type)) {
 				types.push(type)
-				addType(type)
 			}
 		})
 	})
@@ -35,6 +39,12 @@ const addPokemon = async (pokemon: any) => {
 	} catch (error: any) {
 		console.log(`error creating pokemon at init :`, error.message)
 	}
+}
+
+const addAllTypes = async () => {
+	types.forEach(async (type) => {
+		await addType(type)
+	})
 }
 
 const addType = async (name: string) => {

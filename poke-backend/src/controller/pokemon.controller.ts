@@ -4,7 +4,7 @@ import Pokemon from "../models/pokemon"
 const pokemonController = {
 	getPokemons: async (req: Request, res: Response) => {
 		try {
-			const pokemons = await Pokemon.findAll()
+			const pokemons = await Pokemon.findAll({ include: "types" })
 			res.status(200).json(pokemons)
 		} catch (error: any) {
 			res.status(500).json({ message: error.message })
@@ -13,7 +13,9 @@ const pokemonController = {
 
 	getPokemonById: async (req: Request, res: Response) => {
 		try {
-			const pokemon = await Pokemon.findByPk(req.params.id)
+			const pokemon = await Pokemon.findByPk(req.params.id, {
+				include: "types",
+			})
 			if (!pokemon) {
 				res.status(404).json({ message: "Pokemon not found" })
 			}
