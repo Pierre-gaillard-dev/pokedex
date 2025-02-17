@@ -5,6 +5,7 @@ import Rel_pokemonType from "../controller/Rel_pokemonType.controller"
 const router = Router()
 
 router.get("/", pokemonController.getPokemons)
+router.get("/name/:name", pokemonController.getPokemonByName)
 router.get("/:id", pokemonController.getPokemonById)
 router.post("/", pokemonController.createPokemon)
 router.put("/:id", pokemonController.updatePokemon)

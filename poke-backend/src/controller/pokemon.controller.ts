@@ -18,6 +18,23 @@ const pokemonController = {
 			})
 			if (!pokemon) {
 				res.status(404).json({ message: "Pokemon not found" })
+				return
+			}
+			res.status(200).json(pokemon)
+		} catch (error: any) {
+			res.status(500).json({ message: error.message })
+		}
+	},
+
+	getPokemonByName: async (req: Request, res: Response) => {
+		try {
+			const pokemon = await Pokemon.findOne({
+				where: { name: req.params.name },
+				include: "types",
+			})
+			if (!pokemon) {
+				res.status(404).json({ message: "Pokemon not found" })
+				return
 			}
 			res.status(200).json(pokemon)
 		} catch (error: any) {
@@ -61,6 +78,7 @@ const pokemonController = {
 			})
 			if (!deletedPokemon) {
 				res.status(404).json({ message: "Pokemon not found" })
+				return
 			}
 			res.status(200).json({ message: "Pokemon deleted" })
 		} catch (error: any) {
