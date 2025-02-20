@@ -13,6 +13,13 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.screen {
+	--background-color: #fbfdfe;
+	--text-color: #1a1a1a;
+	--accent-color: #bdf777;
+	--accent-light-color: #e3fab9;
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;

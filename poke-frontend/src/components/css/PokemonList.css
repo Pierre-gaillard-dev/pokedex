@@ -1,0 +1,12 @@
+.arcade .pokemon-list * {
+	height: unset;
+	width: unset;
+}
+
+.arcade .pokemon-list .hovered {
+	background-color: var(--accent-light-color);
+}
+
+.arcade .pokemon-list .selected {
+	background-color: var(--accent-color);
+}

@@ -1,3 +1,5 @@
+// components
+import ArcadeUi from "../ui/ArcadeUi"
 // css
 import "./css/Arcade.css"
 
@@ -14,7 +16,9 @@ const Arcade: React.FC = () => {
 			</div>
 			<div className="arcade-part">
 				<div>
-					<div className="arcade-screen"></div>
+					<div className="arcade-screen">
+						<ArcadeUi />
+					</div>
 				</div>
 			</div>
 			<div className="arcade-floor-container">
