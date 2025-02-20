@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+import cors from "cors"
 // db
 import sequelize, { initDB } from "./config/database"
 import "./models/index"
@@ -26,5 +27,12 @@ app.get("/", (req, res) => {
 	res.send("Hello World!")
 })
 
+app.use(
+	cors({
+		origin: "*",
+		methods: ["GET", "POST", "PUT", "DELETE"],
+		allowedHeaders: ["Content-Type", "Authorization"],
+	})
+)
 app.use(express.json())
 app.use("/api", routes)
