@@ -4,7 +4,7 @@ import Type from "../models/type"
 const TypeController = {
 	getTypes: async (req: Request, res: Response) => {
 		try {
-			const types = await Type.findAll()
+			const types = await Type.findAll({ include: "pokemons" })
 			res.status(200).json(types)
 		} catch (error: any) {
 			res.status(500).json({ message: error.message })

@@ -1,5 +1,7 @@
 import { Model, DataTypes } from "sequelize"
 import sequelize from "../config/database"
+import PokemonFamily from "./pokemonFamily"
+import Type from "./type"
 
 class Pokemon extends Model {
 	public id!: number
@@ -8,7 +10,10 @@ class Pokemon extends Model {
 	public cp!: number
 	public picture!: string
 
-	public types!: string[]
+	public family_id!: number
+	public family!: PokemonFamily
+	public evolutions!: Pokemon[]
+	public types!: Type[]
 }
 
 Pokemon.init(

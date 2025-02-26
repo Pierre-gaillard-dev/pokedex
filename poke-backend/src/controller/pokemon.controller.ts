@@ -1,10 +1,14 @@
 import { Request, Response } from "express"
 import Pokemon from "../models/pokemon"
+import PokemonFamily from "../models/pokemonFamily"
+import { Model, Op, where } from "sequelize"
 
 const pokemonController = {
 	getPokemons: async (req: Request, res: Response) => {
 		try {
-			const pokemons = await Pokemon.findAll({ include: "types" })
+			const pokemons = await Pokemon.findAll({
+				include: ["types", "family", "evolutions"],
+			})
 			res.status(200).json(pokemons)
 		} catch (error: any) {
 			res.status(500).json({ message: error.message })
@@ -14,7 +18,17 @@ const pokemonController = {
 	getPokemonById: async (req: Request, res: Response) => {
 		try {
 			const pokemon = await Pokemon.findByPk(req.params.id, {
-				include: "types",
+				include: [
+					"types",
+					{
+						association: "family",
+						include: [
+							{
+								association: "pokemons",
+							},
+						],
+					},
+				],
 			})
 			if (!pokemon) {
 				res.status(404).json({ message: "Pokemon not found" })

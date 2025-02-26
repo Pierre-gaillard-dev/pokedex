@@ -1,8 +1,10 @@
 import Pokemon from "./pokemon"
 import Type from "./type"
 import Rel_pokemonType from "./rel_pokemonType"
+import PokemonFamily from "./pokemonFamily"
 
 // définition des relations entre les tables
+// types
 Pokemon.belongsToMany(Type, {
 	through: Rel_pokemonType,
 	foreignKey: "pokemon_id",
@@ -27,4 +29,15 @@ Rel_pokemonType.belongsTo(Type, {
 	as: "type",
 })
 
-export { Pokemon, Type, Rel_pokemonType }
+// families
+Pokemon.belongsTo(PokemonFamily, {
+	foreignKey: "family_id",
+	as: "family",
+})
+
+PokemonFamily.hasMany(Pokemon, {
+	foreignKey: "family_id",
+	as: "pokemons",
+})
+
+export { Pokemon, Type, Rel_pokemonType, PokemonFamily }

@@ -2,33 +2,27 @@ import { Model, DataTypes } from "sequelize"
 import sequelize from "../config/database"
 import Pokemon from "./pokemon"
 
-class Type extends Model {
+class PokemonFamily extends Model {
 	public id!: number
-	public name!: string
 
 	public pokemons!: Pokemon[]
 }
 
-Type.init(
+PokemonFamily.init(
 	{
 		id: {
 			type: DataTypes.INTEGER,
 			primaryKey: true,
 			autoIncrement: true,
 		},
-		name: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			unique: true,
-		},
 	},
 	{
 		sequelize,
-		tableName: "types",
+		tableName: "pokemon_families",
 		timestamps: false,
 		createdAt: false,
 		updatedAt: false,
 	}
 )
 
-export default Type
+export default PokemonFamily
