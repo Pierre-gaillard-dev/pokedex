@@ -6,7 +6,7 @@ const pokemonAPI = {
 		const response = await apiClient.get("/pokemons")
 		return response.data
 	},
-	async getPokemon(id: number): Promise<Pokemon> {
+	async getPokemonById(id: number): Promise<Pokemon> {
 		const response = await apiClient.get(`/pokemons/${id}`)
 		return response.data
 	},

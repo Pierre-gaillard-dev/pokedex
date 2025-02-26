@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import { useState } from "react"
 //components
 import PokemonList from "../components/PokemonList"
 // css
 import "./css/ArcadeUi.css"
+import PokemonDetail from "../components/PokemonDetail"
 
 const ArcadeUi = () => {
 	const [hoveredPokemonId, setHoveredPokemonId] = useState<number>(0)
@@ -18,12 +19,19 @@ const ArcadeUi = () => {
 
 	return (
 		<div className="arcade-ui screen">
-			<PokemonList
-				hoveredPokemonId={hoveredPokemonId}
-				selectedPokemonId={selectedPokemonId}
-				onPokemonHover={handlePokemonHover}
-				onPokemonClick={handlePokemonClick}
-			/>
+			<div className="container">
+				<PokemonList
+					hoveredPokemonId={hoveredPokemonId}
+					selectedPokemonId={selectedPokemonId}
+					onPokemonHover={handlePokemonHover}
+					onPokemonClick={handlePokemonClick}
+				/>
+			</div>
+			{selectedPokemonId && (
+				<div className="container">
+					<PokemonDetail PokemonId={selectedPokemonId} />
+				</div>
+			)}
 		</div>
 	)
 }
