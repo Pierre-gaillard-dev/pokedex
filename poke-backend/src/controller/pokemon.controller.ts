@@ -12,6 +12,7 @@ const pokemonController = {
 						include: [
 							{
 								association: "pokemons",
+								order: [["id", "ASC"]],
 							},
 						],
 					},
@@ -33,6 +34,7 @@ const pokemonController = {
 						include: [
 							{
 								association: "pokemons",
+								order: [["id", "ASC"]],
 							},
 						],
 					},
