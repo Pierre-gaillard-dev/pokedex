@@ -5,6 +5,7 @@ import Pokemon from "./pokemon"
 class Type extends Model {
 	public id!: number
 	public name!: string
+	public image!: string
 
 	public pokemons!: Pokemon[]
 }
@@ -20,6 +21,10 @@ Type.init(
 			type: DataTypes.STRING,
 			allowNull: false,
 			unique: true,
+		},
+		image: {
+			type: DataTypes.STRING,
+			allowNull: true,
 		},
 	},
 	{
