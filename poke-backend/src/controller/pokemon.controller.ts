@@ -1,13 +1,21 @@
 import { Request, Response } from "express"
 import Pokemon from "../models/pokemon"
-import PokemonFamily from "../models/pokemonFamily"
-import { Model, Op, where } from "sequelize"
 
 const pokemonController = {
 	getPokemons: async (req: Request, res: Response) => {
 		try {
 			const pokemons = await Pokemon.findAll({
-				include: ["types", "family", "evolutions"],
+				include: [
+					"types",
+					{
+						association: "family",
+						include: [
+							{
+								association: "pokemons",
+							},
+						],
+					},
+				],
 			})
 			res.status(200).json(pokemons)
 		} catch (error: any) {
