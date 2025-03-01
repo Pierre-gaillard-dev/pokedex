@@ -15,7 +15,7 @@ export const fillDB = async () => {
 	await addAllPokemons()
 	await addAllTypes()
 
-	//await addAllPokemonTypes()
+	await addAllPokemonTypes()
 	await addAllPokemonFamilies()
 	console.log("Databse filled")
 }
@@ -44,7 +44,7 @@ const addAllPokemons = async () => {
 			}
 		})
 	}
-	console.log("all pokemons added", pokemons.length)
+	console.log("added all pokemons", pokemons.length)
 }
 
 const addPokemon = async (pokemon: any) => {
@@ -80,7 +80,7 @@ const addAllTypes = async () => {
 	for (const type of types) {
 		await addType(type)
 	}
-	console.log("types added", types.length)
+	console.log("added all types", types.length)
 }
 
 /*
@@ -128,7 +128,7 @@ const addType = async (type: { name: string; image: string }) => {
 }
 
 const addAllPokemonTypes = async () => {
-	console.log("adding types to pokemons")
+	console.log("adding all types to pokemons")
 	for (const pokemon of pokemons) {
 		const pokemon2 = await fetch(
 			`http://localhost:3000/api/pokemons/name/${pokemon.name}`,
@@ -159,7 +159,7 @@ const addAllPokemonTypes = async () => {
 			await addPokemonType(pokemonId, typeId)
 		}
 	}
-	console.log("added all pokemons types")
+	console.log("added all types to pokemons")
 	return
 }
 
@@ -182,7 +182,7 @@ const addAllPokemonFamilies = async () => {
 	for (const pokemon of pokemons) {
 		await addPokemonFamily(pokemon)
 	}
-	console.log("added pokemon families")
+	console.log("added all pokemon families")
 }
 
 const addPokemonFamily = async (pokemon: any, familyId?: number) => {
