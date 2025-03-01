@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import PokemonFamily from "../models/pokemonFamily"
+import { Pokemon } from "../models"
 
 const pokemonFamilyController = {
 	getPokemonFamilyById: async (req: Request, res: Response) => {
@@ -7,6 +8,7 @@ const pokemonFamilyController = {
 		try {
 			const pokemonFamily = await PokemonFamily.findByPk(id, {
 				include: "pokemons",
+				order: [[{ model: Pokemon, as: "pokemons" }, "id", "ASC"]],
 			})
 			if (!pokemonFamily) {
 				res.status(404).json({ message: "Pokemon family not found" })

@@ -1,4 +1,5 @@
 import dotenv from "dotenv"
+import { Pokemon } from "../models"
 //import pokemons from "./mock-pokemons"
 
 dotenv.config()
@@ -14,7 +15,8 @@ export const fillDB = async () => {
 	await addAllPokemons()
 	await addAllTypes()
 
-	await addAllPokemonTypes()
+	//await addAllPokemonTypes()
+	await addAllPokemonFamilies()
 	console.log("Databse filled")
 }
 
@@ -175,13 +177,71 @@ const addPokemonType = async (pokemonId: number, typeId: number) => {
 	}
 }
 
-const addPokemonFamily = async () => {
-	try {
-		const res = await fetch("https://localhost:3000/api/family", {
+const addAllPokemonFamilies = async () => {
+	console.log("adding all pokemon families...")
+	for (const pokemon of pokemons) {
+		await addPokemonFamily(pokemon)
+	}
+	console.log("added pokemon families")
+}
+
+const addPokemonFamily = async (pokemon: any, familyId?: number) => {
+	if (familyId) {
+		await fetch(`http://localhost:3000/api/pokemons/${pokemon.id}`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				family_id: familyId,
+			}),
+		})
+
+		if (pokemon.apiEvolutions != "none") {
+			for (const evolution of pokemon.apiEvolutions) {
+				await addPokemonFamily(
+					await (
+						await fetch(
+							`${process.env.SCRAP_URL}/pokemon/${evolution.pokedexId}`
+						)
+					).json(),
+					familyId
+				)
+			}
+		}
+		return
+	}
+
+	if (pokemon.apiPreEvolution != "none") {
+		return
+	}
+
+	const res = await (
+		await fetch("http://localhost:3000/api/family", {
 			method: "POST",
 		})
-		return res.body
-	} catch (error) {
-		console.error("error creating pokemon family :", error)
+	).json()
+
+	await fetch(`http://localhost:3000/api/pokemons/${pokemon.id}`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			family_id: res.id,
+		}),
+	})
+
+	for (const evolution of pokemon.apiEvolutions) {
+		await addPokemonFamily(
+			await (
+				await fetch(
+					`${process.env.SCRAP_URL}/pokemon/${evolution.pokedexId}`
+				)
+			).json(),
+			res.id
+		)
 	}
+
+	return
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import Pokemon from "../models/pokemon"
+import { PokemonFamily } from "../models"
 
 const pokemonController = {
 	getPokemons: async (req: Request, res: Response) => {
@@ -12,10 +13,17 @@ const pokemonController = {
 						include: [
 							{
 								association: "pokemons",
-								order: [["id", "ASC"]],
 							},
 						],
 					},
+				],
+				order: [
+					[
+						{ model: PokemonFamily, as: "family" },
+						{ model: Pokemon, as: "pokemons" },
+						"id",
+						"ASC",
+					],
 				],
 			})
 			res.status(200).json(pokemons)
@@ -34,10 +42,17 @@ const pokemonController = {
 						include: [
 							{
 								association: "pokemons",
-								order: [["id", "ASC"]],
 							},
 						],
 					},
+				],
+				order: [
+					[
+						{ model: PokemonFamily, as: "family" },
+						{ model: Pokemon, as: "pokemons" },
+						"id",
+						"ASC",
+					],
 				],
 			})
 			if (!pokemon) {
