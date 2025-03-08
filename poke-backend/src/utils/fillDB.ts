@@ -9,6 +9,10 @@ const pokemonsAdded: string[] = []
 const types: { name: string; image: string }[] = []
 const typesAdded: string[] = []
 
+/**
+ * Fill the DB with pokemons, types and families from the distant API
+ * @returns void
+ */
 export const fillDB = async () => {
 	pokemons.empty()
 	pokemonsAdded.empty()
@@ -24,6 +28,10 @@ export const fillDB = async () => {
 	console.log("Databse filled")
 }
 
+/**
+ * Get all pokemons from the distant API
+ * @returns array of pokemons
+ */
 const getDistantPokemons = async () => {
 	console.log("fetching pokemons...")
 
@@ -36,6 +44,10 @@ const getDistantPokemons = async () => {
 	return (await pokemons.json()) as unknown as []
 }
 
+/**
+ * Add all pokemons to the DB
+ * @returns void
+ */
 const addAllPokemons = async () => {
 	console.log("adding all pokemons...")
 	for (const pokemon of pokemons) {
@@ -51,9 +63,26 @@ const addAllPokemons = async () => {
 	console.log("added all pokemons", pokemons.length)
 }
 
+/**
+ * Add a pokemon to the DB if it doesn't exist
+ * @param pokemon
+ * @returns void
+ */
 const addPokemon = async (pokemon: any) => {
 	const controller = new AbortController()
 	const timeout = setTimeout(() => controller.abort(), 20000) // 10s timeout
+	const pokemon2 = await fetch(
+		`http://localhost:3000/api/pokemons/name/${pokemon.name}`,
+		{
+			method: "GET",
+			signal: controller.signal,
+		}
+	)
+	if (pokemon2.status === 200) {
+		pokemonsAdded.push(pokemon.name)
+		return
+	}
+	// add new pokemon
 	try {
 		await fetch("http://localhost:3000/api/pokemons", {
 			method: "POST",
@@ -79,6 +108,10 @@ const addPokemon = async (pokemon: any) => {
 	}
 }
 
+/**
+ * Add all types to the DB
+ * @returns void
+ */
 const addAllTypes = async () => {
 	console.log("adding all types...")
 	for (const type of types) {
@@ -87,32 +120,23 @@ const addAllTypes = async () => {
 	console.log("added all types", types.length)
 }
 
-/*
-const addType = async (name: string) => {
-	const type = await fetch(`http://localhost:3000/api/types/name/${name}`, {
-		method: "GET",
-	})
-	if (type.status === 200) {
+/**
+ * Add a type to the DB if it doesn't exist
+ * @param type
+ * @returns void
+ */
+const addType = async (type: { name: string; image: string }) => {
+	const type2 = await fetch(
+		`http://localhost:3000/api/types/name/${type.name}`,
+		{
+			method: "GET",
+		}
+	)
+	if (type2.status === 200) {
+		typesAdded.push(type.name)
 		return
 	}
-	try {
-		const res = await fetch("http://localhost:3000/api/types", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				name: name,
-			}),
-		})
-		return res.body
-	} catch (error) {
-		console.error(`error creating type at init :`, error)
-	}
-}
-*/
-
-const addType = async (type: { name: string; image: string }) => {
+	// add new type
 	try {
 		const res = await fetch("http://localhost:3000/api/types", {
 			method: "POST",
@@ -131,6 +155,10 @@ const addType = async (type: { name: string; image: string }) => {
 	}
 }
 
+/**
+ * Add types to pokemons in the DB if they aren't already
+ * @returns void
+ */
 const addAllPokemonTypes = async () => {
 	console.log("adding all types to pokemons")
 	for (const pokemon of pokemons) {
@@ -167,7 +195,23 @@ const addAllPokemonTypes = async () => {
 	return
 }
 
+/**
+ * Add a type to a pokemon in the DB if it isn't already linked
+ * @param pokemonId
+ * @param typeId
+ * @returns void
+ */
 const addPokemonType = async (pokemonId: number, typeId: number) => {
+	const pokemonType = await fetch(
+		`http://localhost:3000/api/pokemons/${pokemonId}/types/${typeId}`,
+		{
+			method: "GET",
+		}
+	)
+	if (pokemonType.status === 200) {
+		return
+	}
+	// add new pokemonType
 	try {
 		const res = await fetch(
 			`http://localhost:3000/api/pokemons/${pokemonId}/types/${typeId}`,
@@ -181,6 +225,10 @@ const addPokemonType = async (pokemonId: number, typeId: number) => {
 	}
 }
 
+/**
+ * Add all pokemon families to the DB
+ * @returns void
+ */
 const addAllPokemonFamilies = async () => {
 	console.log("adding all pokemon families...")
 	for (const pokemon of pokemons) {
@@ -189,7 +237,31 @@ const addAllPokemonFamilies = async () => {
 	console.log("added all pokemon families")
 }
 
+/**
+ * Add a pokemon family to the DB if it doesn't exist and its evolutions
+ * @param pokemon
+ * @param familyId if the pokemon has a pre-evolution
+ * @returns void
+ */
 const addPokemonFamily = async (pokemon: any, familyId?: number) => {
+	// check if pokemon already has a family
+	const pokemon2 = await fetch(
+		`http://localhost:3000/api/pokemons/name/${pokemon.name}`,
+		{
+			method: "GET",
+		}
+	)
+	if (pokemon2.status === 404) {
+		console.error(`pokemon not found at init :`, pokemon.name)
+		return
+	}
+	const pokemonBody = await pokemon2.json()
+	if (pokemonBody.family_id) {
+		if ((familyId && pokemonBody.family_id == familyId) || !familyId) {
+			return
+		}
+	}
+	// links pokemon to existing family
 	if (familyId) {
 		await fetch(`http://localhost:3000/api/pokemons/${pokemon.id}`, {
 			method: "PUT",
@@ -220,12 +292,14 @@ const addPokemonFamily = async (pokemon: any, familyId?: number) => {
 		return
 	}
 
+	// add new family
 	const res = await (
 		await fetch("http://localhost:3000/api/family", {
 			method: "POST",
 		})
 	).json()
 
+	// links pokemon to new family
 	await fetch(`http://localhost:3000/api/pokemons/${pokemon.id}`, {
 		method: "PUT",
 		headers: {
@@ -236,6 +310,7 @@ const addPokemonFamily = async (pokemon: any, familyId?: number) => {
 		}),
 	})
 
+	// add evolutions to family
 	for (const evolution of pokemon.apiEvolutions) {
 		await addPokemonFamily(
 			await (
