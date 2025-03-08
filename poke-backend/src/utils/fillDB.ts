@@ -10,6 +10,10 @@ const types: { name: string; image: string }[] = []
 const typesAdded: string[] = []
 
 export const fillDB = async () => {
+	pokemons.empty()
+	pokemonsAdded.empty()
+	types.empty()
+	typesAdded.empty()
 	console.log("Filling database")
 	pokemons = await getDistantPokemons()
 	await addAllPokemons()
@@ -57,7 +61,7 @@ const addPokemon = async (pokemon: any) => {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				// id: pokemon.id,
+				id: pokemon.id,
 				name: pokemon.name,
 				hp: pokemon.stats.HP,
 				cp: pokemon.stats.attack,

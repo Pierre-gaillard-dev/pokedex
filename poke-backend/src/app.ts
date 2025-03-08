@@ -7,6 +7,9 @@ import "./models/index"
 import { fillDB } from "./utils/fillDB"
 // routes
 import routes from "./routes"
+// types
+import types from "./utils/types"
+types()
 
 dotenv.config()
 

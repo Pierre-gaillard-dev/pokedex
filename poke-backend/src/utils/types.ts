@@ -1,8 +1,11 @@
-export type Pokemon = {
-	id: number
-	name: string
-	hp: number
-	cp: number
-	picture: string
-	created: Date
+declare global {
+	interface Array<T> {
+		empty(): void
+	}
 }
+
+Array.prototype.empty = function () {
+	this.length = 0
+}
+
+export default () => {}
