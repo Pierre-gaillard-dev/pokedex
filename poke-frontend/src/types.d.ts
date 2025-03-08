@@ -8,12 +8,19 @@ export type Type = {
 	}
 }
 
+export type Family = {
+	id: number
+	pokemons: Pokemon[]
+}
+
 export type Pokemon = {
 	id: number
 	name: string
 	hp: number
 	cp: number
 	picture: string
+	family_id: number
 	created: Date
 	types: Type[]
+	family: Family
 }

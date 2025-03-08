@@ -29,7 +29,10 @@ const ArcadeUi = () => {
 			</div>
 			{selectedPokemonId && (
 				<div className="container">
-					<PokemonDetail PokemonId={selectedPokemonId} />
+					<PokemonDetail
+						PokemonId={selectedPokemonId}
+						setPokemonId={setSelectedPokemonId}
+					/>
 				</div>
 			)}
 		</div>
