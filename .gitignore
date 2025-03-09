@@ -2,3 +2,4 @@
 .timetracker
 
 **/.env
+**/dist

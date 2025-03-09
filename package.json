@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "concurrently \"npm --prefix poke-backend run dev\" \"npm --prefix poke-frontend run dev\" "
+		"dev": "concurrently \"npm --prefix poke-backend run dev\" \"npm --prefix poke-frontend run dev\" ",
+		"build": "npm --prefix poke-frontend run build && npm --prefix poke-backend run build"
 	},
 	"keywords": [],
 	"author": "",

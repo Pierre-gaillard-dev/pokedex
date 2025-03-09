@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const apiClient = axios.create({
-	baseURL: "http://localhost:3000/api",
+	baseURL: "http://pokedex.pierre-gaillard.mds-vannes.yt/api",
 	headers: {
 		"Content-Type": "application/json",
 	},

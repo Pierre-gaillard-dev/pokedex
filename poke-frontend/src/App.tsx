@@ -1,5 +1,3 @@
-// React
-import { useState } from "react"
 // components
 import Arcade from "./layouts/arcade"
 

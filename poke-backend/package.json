@@ -6,7 +6,9 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "ts-node-dev --transpile-only src/app.ts",
-		"init": "cross-env DB_RESET=true ts-node-dev --transpile-only src/app.ts"
+		"init": "cross-env DB_RESET=true ts-node-dev --transpile-only src/app.ts",
+		"build": "tsc",
+		"start": "node dist/app.js"
 	},
 	"keywords": [],
 	"author": "",
